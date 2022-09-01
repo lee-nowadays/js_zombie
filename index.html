@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Roboto:wght@900&display=swap"
+    rel="stylesheet">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Patrick Hand', cursive;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .game {
+      width: 100vw;
+      height: 100vh;
+      background: url(./bg1/background.jpg);
+      background-size: contain;
+      position: relative;
+      color: white;
+      overflow: hidden;
+
+    }
+
+
+    #game {
+      width: 100vw;
+      height: 100vh;
+
+      position: relative;
+      z-index: 1;
+    }
+
+    #game img {
+      position: absolute;
+
+      /* 無法被選取 */
+      user-select: none;
+      /* 無法被拖曳 */
+      -webkit-user-drag: none;
+      -webkit-user-select: none;
+
+    }
+
+    #btn-start {
+      width: 200px;
+      height: 100px;
+      border: none;
+      border-radius: 40px;
+      background: linear-gradient(#faa, #aaf);
+      text-decoration: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+      cursor: pointer;
+      font-size: 2rem;
+      color: #f00;
+      z-index: 2;
+
+    }
+
+    #btn-start:hover {
+      border: 10px solid rgba(255, 150, 150, 1);
+
+    }
+
+    #text-time {
+      position: absolute;
+      font-size: 2rem;
+      top: 10%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      /* 無法被選取 */
+      user-select: none;
+    }
+
+    .left {
+      font-size: 4rem;
+      line-height: 100px;
+      margin-left: 100px;
+      user-select: none;
+    }
+
+
+    .attack {
+      width: 200px;
+      height: 30px;
+      border: 1px solid #000;
+      background: #f00;
+
+    }
+
+    #attackcost {
+      font-size: 1rem;
+      line-height: 30px;
+    }
+
+    .animate1 {
+      animation: a2 linear 1s infinite;
+    }
+    /* 攻擊力增加 */
+    @keyframes a2 {
+      50% {
+        transform: scale(1.05);
+        margin-left: 5px;
+      }
+    }
+
+   
+
+    .monster {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 600px;
+      height: 600px;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+
+    .animate {
+      animation: a1 linear 0.25s 1;
+    }
+
+    @keyframes a1 {
+      50% {
+        transform: translate(-55%, -55%) scale(1.05);
+
+      }
+    }
+
+    .hero {
+      position: absolute;
+      top: 90%;
+      left: 50%;
+      width: 200px;
+      height: 200px;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+
+    }
+    .animate2 {
+      animation: a4 linear 0.4s 1;
+    }
+    @keyframes a4 {
+      50% {
+        transform: translate(-55%, -55%) scale(1.05) skew(0deg, 45deg);
+
+      }
+    }
+    .animate3 {
+      animation: a5 linear 0.4s 1;
+    }
+    @keyframes a5 {
+      50% {
+        transform: translate(-55%, -55%) scale(1.05) skew(0,60deg);
+
+      }
+    }
+    .animate4 {
+      animation: a6 linear 0.4s 1;
+    }
+    @keyframes a6 {
+      50% {
+        transform: translate(-55%, -55%) scale(1.05) scaleX(-1)  skew(45deg, 0deg);
+
+      }
+    }
+    .animate5 {
+      animation: a7 linear 0.4s 1;
+    }
+    @keyframes a7 {
+      50% {
+        transform: translate(-55%, -55%) scale(1.05) scaleX(-1) skew(60deg, 0deg);
+
+
+      }
+    }
+    /* 打死怪物動畫 */
+    .smoke {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 200px;
+      height: 200px;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      animation: a3 linear 0.5s 1;
+      background-repeat: no-repeat;
+    }
+
+    @keyframes a3 {
+      50% {
+        transform: translate(-55%, -55%) scale(1.3);
+        display: none;
+      }
+    }
+
+    .blood {
+      background: linear-gradient(180deg, #fff, #f00, #fff);
+      border: 1px solid #000;
+      border-radius: 40px;
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      width: 400px;
+      height: 50px;
+      text-align: center;
+      line-height: 50px;
+      transform: translate(-50%, -50%);
+    }
+
+
+
+    .blood {
+      /* 無法被選取 */
+      user-select: none;
+      /* 無法被拖曳 */
+      -webkit-user-drag: none;
+      -webkit-user-select: none;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="button" value="開始" id="btn-start">
+
+  <div class="game">
+
+  </div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'
+    integrity='sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=='
+    crossorigin='anonymous'></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    let countdown = 15
+    let timer = 0
+    let monsterkill = 0
+    let blood = 10
+    let totalblood = 10
+    let costblood = totalblood
+    let money = 0
+    let attack = 1
+    let attackcost = 10
+
+    // 產生錢袋
+    const moneyp = $(`
+    <img id="moneybag" src="./bg1/money.png" style="width:100px;height:100px">`)
+    // 總金錢
+    const totalmoney = $(`<span class='left' id="money">0</span><br>`)
+    // 攻擊力圖
+    const attackp = $(`
+    <img id="attackp" src="./bg1/attack.png" style="width:100px;height:100px">`)
+    // 總攻擊力
+    const totalattack = $(`<span class='left' id="attack">1</span>`)
+    // 遊戲時間
+    const time = $(`<span id="text-time">剩餘:${countdown}秒</span>`)
+    $('#game').append(time)
+
+    const hero = $(`<img src="./char/hero.png" class="hero">`)
+
+    $('#btn-start').click(function () {
+      // 停用按鈕
+      $(this).css('display', 'none')
+
+      // 重設
+      countdown = 15
+      monsterkill = 0
+      blood = 10
+      totalblood = 10
+      costblood = totalblood
+      money = 0
+      attack = 1
+      attackcost = 10
+      const game = $(`<div id='game'></div>`)
+      // 產生遊戲區域
+      $('.game').append(game)
+      // 數值歸0
+
+      // 加入錢袋
+      $('#game').append(moneyp)
+      // 總金額
+      $('#game').append(totalmoney)
+      // 加入攻擊力
+      $('#game').append(attackp)
+      $('#game').append(totalattack)
+      // 加入時間
+      $('#game').append(time)
+
+      // 增加攻擊力
+      const plusattack = $(`
+      <div class="attack">
+        <img src="./bg1/attack.png" style="height:30px ;width:30px"><span class='left' id='attackcost' style='text-align:center'>${attackcost}金幣</span>
+      </div>`)
+      $('#game').append(plusattack)
+
+      // 產生英雄
+      // const hero = $(`<img src="./char/hero.png" class="hero">`)
+      $('#game').append(hero)
+
+      // 產生血條
+      const bloodbar = $(`<div class="blood">
+      <span id=costblood>${costblood}</span>
+        /
+      <span id=totalblood>${totalblood}</span>
+      </div>`)
+      $('#game').append(bloodbar)
+      // 產生怪物
+      const rand = Math.round(Math.random() * 8)
+      const monster = $(`<img src="./char/m${rand+1}.png" class="monster">`)
+      $('#game').append(monster)
+      $('#text-time').text(`剩餘:${countdown}秒`)
+      // 開始遊戲
+      timer = setInterval(function () {
+        // 倒數
+
+        countdown--
+        $('#text-time').text(`剩餘:${countdown}秒`)
+
+
+        if (countdown <= 0) {
+          clearInterval(timer)
+          // 先將金幣和攻擊力用成預設，不然remove東西後改不了
+          $('#money').text('0')
+          $('#attack').text('1')
+          // 移除所有圖片
+          $('#game').remove()
+          // 重新啟用開始按鈕
+          $('#btn-start').css('display', 'block')
+          $('#game').stop(true, false)
+
+
+          Swal.fire({
+            title: '遊戲結束',
+            text: `時間到，您殺了${monsterkill}隻怪物`,
+            icon: 'info'
+          })
+
+        }
+      }, 1000)
+    })
+    $('.game').on('click', '.monster', function () {
+     
+      const rand = Math.round(Math.random() * 8)
+      $('.monster').toggleClass('animate')
+      $('#costblood').text(costblood -= attack)
+      money += attack
+      $('#money').text(money)
+      if (costblood <= 0) {
+        $(this).attr('src', './bg1/smoke.png')
+        $(this).removeClass('monster').addClass('smoke')
+        countdown = 15
+        $('#text-time').text(`剩餘:${countdown}秒`)
+        monsterkill++
+        money += totalblood
+        $('#money').text(money)
+        totalblood = Math.round(totalblood * 1.32)
+        $('#totalblood').text(totalblood)
+        costblood = totalblood
+        $('#costblood').text(totalblood)
+        growmonster = setTimeout(function () {
+          $('.smoke').remove()
+          if ($('#game .monster').length < 1) {
+            const monster = $(`<img src="./char/m${rand+1}.png" class="monster">`)
+            $('#game').append(monster)
+          }
+        }, 500)
+        if (countdown <= 0) {
+          clearTimeout(growmonster)
+        }
+      }
+    }
+    )
+    $('.game').on('click', '.monster', function () {
+      const rand1 = Math.round((Math.random() * 3)+2)
+      $('.hero').toggleClass(`animate${rand1}`)
+    })
+    
+    
+    $('.game').on('click', '.attack', function () {
+
+      if (money - attackcost >= 0) {
+        money -= attackcost
+        attackcost = Math.round(attackcost * 1.15)
+        $('#money').text(money)
+        attack++
+        $('#attack').text(attack)
+        $('#attackcost').text(`${attackcost}金幣`)
+      }
+    })
+    $('.game').on('mouseover', '.attack', function () {
+      $('.attack').addClass('animate1')
+    })
+    $('.game').on('mouseout', '.attack', function () {
+      $('.attack').removeClass('animate1')
+    })
+  </script>
+</body>
+
+</html>
